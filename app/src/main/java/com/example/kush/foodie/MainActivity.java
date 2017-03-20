@@ -13,8 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -29,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -63,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
          */
         @Override
         protected Void doInBackground(Void... params) {
-            Log.e("kjsndksdjksadsadsa","hjsadksakjdjgsd878213182387213y21u321hu3iih");
             ClarifaiClient clarifai = new ClarifaiBuilder("JsZUubSQp81Ni1rf9VSlWP__visATvicKk_S9Fp9", "bBf3BcHGtl1nVC2-cnkycsBNlvD7LMuSBZwg0n11")
                     .client(new OkHttpClient()) // OPTIONAL. Allows customization of OkHttp by the user
                     .buildSync();// or use .build() to get a Future<ClarifaiClient>
@@ -115,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 1888;
     private static final int VIDEO_REQUEST = 2000;
     private static final int AUDIO_REQUEST = 6000;
-
     private ImageView imageView;
     private VideoView videoView;
     @Override
@@ -134,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
         });
-
     }
 
     public void click(View v){
@@ -215,7 +217,6 @@ public class MainActivity extends AppCompatActivity {
                     videoUrl = taskSnapshot.getDownloadUrl();
                     Log.e("downString :-",videoUrl.toString());
                     Toast.makeText(getApplicationContext(),"Won",Toast.LENGTH_SHORT).show();
-                    new test().execute();
                 }
             });
 
@@ -225,6 +226,11 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             Log.e("final result",result.get(0)); // getting output of string
         }
+    }
+
+    public void submit(View v){
+        Intent i = new Intent(this,SubmitActivity.class);
+        startActivity(i);
     }
 
 }

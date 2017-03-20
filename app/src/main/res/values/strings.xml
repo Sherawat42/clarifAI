@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">foodie</string>
+    <string-array name="choices">
+        <item>Video</item>
+        <item>Audio</item>
+        <item>Image</item>
+        <item>Full Text</item>
+    </string-array>
 </resources>
+
