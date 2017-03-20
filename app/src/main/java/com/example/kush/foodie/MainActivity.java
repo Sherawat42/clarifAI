@@ -1,11 +1,13 @@
 package com.example.kush.foodie;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +29,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Locale;
 
 import clarifai2.api.ClarifaiBuilder;
 import clarifai2.api.ClarifaiClient;
@@ -109,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int CAMERA_REQUEST = 1888;
     private static final int VIDEO_REQUEST = 2000;
+    private static final int AUDIO_REQUEST = 6000;
+
     private ImageView imageView;
     private VideoView videoView;
     @Override
@@ -170,6 +176,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void promptSpeechToText(View view){
+        Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, new Locale("hi","IN"));
+        i.putExtra(RecognizerIntent.EXTRA_PROMPT,"Say Your Complaint");
+        try{
+            startActivityForResult(i,AUDIO_REQUEST);
+        }catch (ActivityNotFoundException a){
+            Toast.makeText(this,"Sorry Speech Recognition Not Supported",Toast.LENGTH_SHORT).show();
+        }
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
@@ -202,6 +220,11 @@ public class MainActivity extends AppCompatActivity {
             });
 
 
+        }
+
+        if(requestCode == AUDIO_REQUEST && resultCode == Activity.RESULT_OK){
+            ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            Log.e("final result",result.get(0)); // getting output of string
         }
 
     }
