@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
          */
         @Override
         protected Void doInBackground(Void... params) {
+            Log.e("kjsndksdjksadsadsa","hjsadksakjdjgsd878213182387213y21u321hu3iih");
             ClarifaiClient clarifai = new ClarifaiBuilder("JsZUubSQp81Ni1rf9VSlWP__visATvicKk_S9Fp9", "bBf3BcHGtl1nVC2-cnkycsBNlvD7LMuSBZwg0n11")
                     .client(new OkHttpClient()) // OPTIONAL. Allows customization of OkHttp by the user
                     .buildSync();// or use .build() to get a Future<ClarifaiClient>
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
             ClarifaiResponse response = clarifai.getDefaultModels().generalModel().predict()
                     .withInputs(
-                            ClarifaiInput.forImage(ClarifaiImage.of(videoUrl.toString()))
+                            ClarifaiInput.forImage(ClarifaiImage.of(imageUrl.toString()))
                     )
                     .executeSync();
             JSONObject responseJSON = null;
@@ -123,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         imageView = (ImageView)this.findViewById(R.id.iv);
         videoView = (VideoView)findViewById(R.id.videoView);
-        Button videoButton =(Button)findViewById(R.id.b4);
         Button photoButton = (Button)findViewById(R.id.b3);
 
         photoButton.setOnClickListener(new View.OnClickListener() {
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void promptSpeechToText(View view){
+    public void promptSpeechToText(View view){
         Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, new Locale("hi","IN"));
@@ -221,12 +221,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
-
         if(requestCode == AUDIO_REQUEST && resultCode == Activity.RESULT_OK){
             ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             Log.e("final result",result.get(0)); // getting output of string
         }
-
     }
 
 }
